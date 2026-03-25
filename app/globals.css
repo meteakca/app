@@ -1,0 +1,89 @@
+@import "tailwindcss";
+@import "../styles/tokens.css";
+
+@theme inline {
+  /* Map design tokens into Tailwind utilities */
+  --color-brand-primary: var(--blue-500);
+  --color-brand-accent: var(--teal-500);
+
+  --color-bg-canvas: var(--gray-50);
+  --color-bg-surface: var(--gray-0);
+  --color-bg-elevated: var(--gray-0);
+  --color-bg-subtle: var(--gray-25);
+  --color-bg-muted: var(--gray-100);
+
+  --color-text-primary: var(--gray-900);
+  --color-text-secondary: var(--gray-600);
+  --color-text-tertiary: var(--gray-400);
+  --color-text-disabled: var(--gray-300);
+  --color-text-inverse: var(--gray-0);
+  --color-text-link: var(--blue-600);
+
+  --color-border-default: var(--gray-150);
+  --color-border-strong: var(--gray-200);
+  --color-border-focus: var(--blue-500);
+  --color-border-error: var(--red-500);
+
+  --radius-button: 8px;
+  --radius-input: 8px;
+  --radius-card: 12px;
+  --radius-badge: 9999px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --shadow-focus: 0 0 0 3px rgb(91 122 245 / 0.25);
+  --shadow-primary: 0 4px 14px 0 rgb(91 122 245 / 0.35);
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  --z-toast: 800;
+  --z-modal: 700;
+  --z-dropdown: 600;
+  --z-sidebar: 400;
+}
+
+/* Base styles */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  background-color: var(--color-bg-canvas);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+  min-height: 100%;
+}
+
+/* Focus ring utility */
+:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+}
+
+/* Skeleton animation */
+@keyframes shimmer {
+  from { background-position: -200% 0; }
+  to   { background-position:  200% 0; }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--gray-100) 25%,
+    var(--gray-50)  50%,
+    var(--gray-100) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+}
