@@ -92,11 +92,13 @@ export async function updateHourLogAction(
   return { success: true }
 }
 
-export async function approveSiteAction(logId: string) {
+export type ApproveState = { error?: string; success?: boolean }
+
+export async function approveSiteAction(logId: string): Promise<ApproveState> {
   const profile = await requireRole(['site_supervisor'])
   const supabase = await createClient()
 
-  await supabase
+  const { error } = await supabase
     .from('hour_logs')
     .update({
       status: 'site_approved',
@@ -107,15 +109,18 @@ export async function approveSiteAction(logId: string) {
     .eq('id', logId)
     .eq('status', 'pending')
 
+  if (error) return { error: 'Failed to approve. Please try again.' }
+
   revalidatePath('/supervisor')
   revalidatePath('/supervisor/students')
+  return { success: true }
 }
 
-export async function approveFacultyAction(logId: string) {
+export async function approveFacultyAction(logId: string): Promise<ApproveState> {
   const profile = await requireRole(['faculty_supervisor'])
   const supabase = await createClient()
 
-  await supabase
+  const { error } = await supabase
     .from('hour_logs')
     .update({
       status: 'faculty_approved',
@@ -126,8 +131,11 @@ export async function approveFacultyAction(logId: string) {
     .eq('id', logId)
     .eq('status', 'site_approved')
 
+  if (error) return { error: 'Failed to approve. Please try again.' }
+
   revalidatePath('/faculty')
   revalidatePath('/faculty/students')
+  return { success: true }
 }
 
 export type RejectState = { error?: string; success?: boolean }

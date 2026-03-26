@@ -10,7 +10,11 @@ interface SiteApprovalActionsProps {
 
 export function SiteApprovalActions({ logId }: SiteApprovalActionsProps) {
   const [showRejectForm, setShowRejectForm] = useState(false)
+
+  const approveWithId = approveSiteAction.bind(null, logId)
   const rejectWithId = rejectHourLogAction.bind(null, logId)
+
+  const [approveState, approveFormAction, isApproving] = useActionState(approveWithId, {})
   const [rejectState, rejectFormAction, isRejecting] = useActionState(rejectWithId, {})
 
   if (showRejectForm) {
@@ -41,19 +45,24 @@ export function SiteApprovalActions({ logId }: SiteApprovalActionsProps) {
   }
 
   return (
-    <div className="flex gap-2">
-      <form action={approveSiteAction.bind(null, logId)}>
-        <Button type="submit" variant="success" size="sm">Approve</Button>
-      </form>
-      <Button
-        type="button"
-        variant="ghost"
-        size="sm"
-        onClick={() => setShowRejectForm(true)}
-        className="text-[var(--red-600)] hover:bg-[var(--red-50)]"
-      >
-        Reject
-      </Button>
+    <div className="flex flex-col gap-1">
+      <div className="flex gap-2">
+        <form action={approveFormAction}>
+          <Button type="submit" variant="success" size="sm" loading={isApproving}>Approve</Button>
+        </form>
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          onClick={() => setShowRejectForm(true)}
+          className="text-[var(--red-600)] hover:bg-[var(--red-50)]"
+        >
+          Reject
+        </Button>
+      </div>
+      {approveState.error && (
+        <p className="text-xs text-[var(--color-text-danger)]">{approveState.error}</p>
+      )}
     </div>
   )
 }
@@ -64,7 +73,11 @@ interface FacultyApprovalActionsProps {
 
 export function FacultyApprovalActions({ logId }: FacultyApprovalActionsProps) {
   const [showRejectForm, setShowRejectForm] = useState(false)
+
+  const approveWithId = approveFacultyAction.bind(null, logId)
   const rejectWithId = rejectHourLogAction.bind(null, logId)
+
+  const [approveState, approveFormAction, isApproving] = useActionState(approveWithId, {})
   const [rejectState, rejectFormAction, isRejecting] = useActionState(rejectWithId, {})
 
   if (showRejectForm) {
@@ -95,19 +108,24 @@ export function FacultyApprovalActions({ logId }: FacultyApprovalActionsProps) {
   }
 
   return (
-    <div className="flex gap-2">
-      <form action={approveFacultyAction.bind(null, logId)}>
-        <Button type="submit" variant="success" size="sm">Final Approve</Button>
-      </form>
-      <Button
-        type="button"
-        variant="ghost"
-        size="sm"
-        onClick={() => setShowRejectForm(true)}
-        className="text-[var(--red-600)] hover:bg-[var(--red-50)]"
-      >
-        Reject
-      </Button>
+    <div className="flex flex-col gap-1">
+      <div className="flex gap-2">
+        <form action={approveFormAction}>
+          <Button type="submit" variant="success" size="sm" loading={isApproving}>Final Approve</Button>
+        </form>
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          onClick={() => setShowRejectForm(true)}
+          className="text-[var(--red-600)] hover:bg-[var(--red-50)]"
+        >
+          Reject
+        </Button>
+      </div>
+      {approveState.error && (
+        <p className="text-xs text-[var(--color-text-danger)]">{approveState.error}</p>
+      )}
     </div>
   )
 }
